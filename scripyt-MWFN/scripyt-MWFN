@@ -1,9 +1,13 @@
+#!/usr/bin/env python
+
 import subprocess
 try:
     import pandas as pd
 except:
     print('Please install pandas: pip install pandas')
 
+pd.set_option('max_columns', None)
+pd.set_option('max_colwidth', None)
 class Scrap():
     def __init__(self, file):
         self.file = file
