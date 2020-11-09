@@ -1,0 +1,110 @@
+import subprocess
+try:
+    import pandas as pd
+except:
+    print('Please install pandas: pip install pandas')
+
+class Scrap():
+    def __init__(self, file):
+        self.file = file
+        self.fileread = Scrap._openfile(self)
+
+    def _openfile(self):
+        fopen = open(self.file, 'r')
+        fileread = fopen.read()
+        fopen.close()
+        return fileread
+
+    def _grep1(self, CPs = []):   
+        #CPs.sort()   
+        greps = []
+        
+        for cp in CPs:
+            if cp < 10:
+                get_grep = subprocess.getoutput('grep "CP     {}" {}'.format(cp, self.file))
+                greps.append(get_grep)   
+            elif cp < 100:
+                get_grep = subprocess.getoutput('grep "CP    {}" {}'.format(cp, self.file))
+                greps.append(get_grep)   
+            elif cp < 1000:
+                get_grep = subprocess.getoutput('grep "CP   {}" {}'.format(cp, self.file))
+                greps.append(get_grep)
+            elif cp < 10000:
+                get_grep = subprocess.getoutput('grep "CP  {}" {}'.format(cp, self.file))
+                greps.append(get_grep)
+
+            else:
+                pass
+
+        return greps
+
+    def _scrap(self, CPs = []):
+        greps = Scrap._grep1(self, CPs=CPs)
+        pos_infile = []
+        for grep in greps:
+            for pos,line in enumerate(self.fileread.splitlines()):
+                if grep == line:
+                    pos_infile.append(pos)
+                    continue
+
+        dict_grep = {}
+        for i,pos in enumerate(pos_infile):
+            #print(self.fileread.splitlines()[i:i+52])
+            dict_grep['CP {}'.format(CPs[i])] = self.fileread.splitlines()[pos:pos+52]
+            
+        return dict_grep
+    
+    def run(self, CPs=[]):
+        dict_grep = Scrap._scrap(self, CPs=CPs)
+        features = [2,6,8,9,10,11]
+        result = {}
+        result_list = []
+        for key, value in dict_grep.items():
+            #print(key, value)
+            for feat in features:                
+                result_list.append(dict_grep[key][feat].split(':')[1])
+            result[key] = result_list
+            result_list = []
+        
+        df = pd.DataFrame(result)
+        df = df.T
+        df.columns = ['ρ(r)', 'G(r)', 'K(r)', 'V(r)', 'E(r)|H(r)', 'ᐁ²ρ']
+        print(df)
+        
+if __name__ == '__main__':
+
+
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-cp","--list",nargs="+",
+                        help="Entry list with CP's ex: python3 script.py -l 1 10 99",
+                        required=True)
+    parser.add_argument('-p',"--path", help="Entry with file's path ex: python3 script.py -p /home/file.txt")
+    args = parser.parse_args()
+    
+    cplist = [int(cp) for cp in args.list]
+    path = args.path
+    
+    print(cplist, path)
+    #sc = Scrap(file='/home/jefferson/Dropbox/Jefferson/rotinas_python/QTAIM/lami_biftalato.txt')
+    sc = Scrap(file=path)
+    sc.run(CPs=cplist)
+    
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
