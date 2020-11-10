@@ -12,7 +12,7 @@ $ python3 setup.py install
 # Install via pip
 
 ```
-$ pip install scripyt-MWFN
+$ pip install scripyt_MWFN
 ```
 
 # Run script
