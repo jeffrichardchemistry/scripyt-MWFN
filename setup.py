@@ -5,7 +5,7 @@ with open("README.md", 'r') as fr:
 
 setup(
     name='scripyt-MWFN',
-    version='1.0.0',
+    version='1.0.1',
     url='https://github.com/jeffrichardchemistry/scripyt-MWFN',
     license='GNU GPL',
     author='Jefferson Richard',
@@ -19,14 +19,15 @@ setup(
 	scripts=['scripyt-MWFN/scripyt-MWFN'],
 	classifiers = [
 		'Intended Audience :: Developers',
-		'Intended Audience :: End Users/Desktop',
 		'Intended Audience :: Science/Research',
 		'Topic :: Scientific/Engineering :: Chemistry',
 		'Topic :: Scientific/Engineering :: Physics',
 		'Topic :: Scientific/Engineering :: Bio-Informatics',
 		'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
 		'Natural Language :: English',
-		'Operating System :: Unix',
 		'Programming Language :: Python :: 3',
-		'Programming Language :: Python :: 3.6']
+		'Programming Language :: Python :: 3.6',
+		'Programming Language :: Python :: 3.7',
+		'Programming Language :: Python :: 3.8',
+		'Programming Language :: Python :: 3.9']
 )
